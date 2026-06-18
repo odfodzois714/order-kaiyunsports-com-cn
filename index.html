@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资料索引 · 开云知识库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f9f6f0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+            line-height: 1.7;
+            color: #2d2a24;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* 目录感头部 */
+        .page-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e3ddd1;
+            margin-bottom: 2.5rem;
+        }
+
+        .breadcrumb {
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+            color: #8b8170;
+            text-transform: uppercase;
+        }
+
+        .breadcrumb span {
+            background: #eeeadf;
+            padding: 0.1rem 0.8rem;
+            border-radius: 12px;
+            font-weight: 500;
+            color: #5e5343;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: -0.4px;
+            color: #2f2a1f;
+            margin: 0.5rem 0 0.1rem;
+        }
+
+        .page-header p {
+            color: #6b6254;
+            max-width: 640px;
+            font-size: 1rem;
+        }
+
+        /* 信息网格 — 目录式卡片 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .card {
+            background: #fffffffa;
+            border-radius: 20px;
+            padding: 1.8rem 1.5rem 2rem;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.02), 0 4px 12px rgba(41, 35, 24, 0.04);
+            border: 1px solid #ede7db;
+            transition: all 0.15s;
+        }
+
+        .card:hover {
+            background: #fffdf8;
+            border-color: #d3caba;
+            box-shadow: 0 6px 18px rgba(68, 58, 42, 0.06);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 550;
+            letter-spacing: -0.2px;
+            color: #2f281e;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid #eee7da;
+        }
+
+        .card p, .card li {
+            font-size: 0.95rem;
+            color: #3e372b;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #b3a48b;
+            font-weight: 300;
+        }
+
+        .highlight-tag {
+            display: inline-block;
+            background: #e9e2d3;
+            padding: 0.1rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #544a38;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.6rem;
+        }
+
+        /* 引用块 / 提示区 */
+        .insight-block {
+            background: #f3efe6;
+            border-left: 4px solid #cbbca4;
+            padding: 1.6rem 2rem;
+            margin: 2.5rem 0 2.2rem;
+            border-radius: 0 16px 16px 0;
+            font-size: 0.98rem;
+            color: #3b3429;
+        }
+
+        .insight-block strong {
+            font-weight: 600;
+            color: #2d261b;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .tip-block {
+            background: #eae7db;
+            border-radius: 14px;
+            padding: 1.4rem 1.8rem;
+            margin-bottom: 2.4rem;
+            border: 1px solid #dbd2c1;
+            font-size: 0.95rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.3rem 0.6rem;
+        }
+
+        .tip-block .label {
+            font-weight: 600;
+            color: #5b4f3b;
+            background: transparent;
+        }
+
+        .tip-block a {
+            color: #3a3325;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            text-decoration-color: #c6b69c;
+            font-weight: 500;
+        }
+
+        .tip-block a:hover {
+            color: #0f0c07;
+            text-decoration-color: #8f7c5f;
+        }
+
+        /* 相关信息区 (faq 摘要) */
+        .related-section {
+            margin-top: 1.8rem;
+        }
+
+        .related-section h2 {
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: -0.2px;
+            color: #2c261c;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid #e0d8c8;
+            padding-bottom: 0.6rem;
+        }
+
+        .faq-item {
+            padding: 1rem 0.5rem 1rem 0;
+            border-bottom: 1px dashed #e1d9cb;
+            display: flex;
+            align-items: baseline;
+            gap: 0.2rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        .faq-item .q {
+            font-weight: 550;
+            color: #3a3325;
+            min-width: 7rem;
+        }
+
+        .faq-item .a {
+            color: #4f4637;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .faq-item .a a {
+            color: #3a3325;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: #cec0ab;
+        }
+
+        .faq-item .a a:hover {
+            color: #16120b;
+        }
+
+        .footnote {
+            margin-top: 3.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0d7c7;
+            font-size: 0.85rem;
+            color: #7a6f5d;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .footnote span {
+            background: #eeeadf;
+            padding: 0.1rem 0.8rem;
+            border-radius: 12px;
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 600px) {
+            body { padding: 1.2rem 1rem; }
+            .page-header h1 { font-size: 1.7rem; }
+            .info-grid { gap: 1rem; }
+            .card { padding: 1.4rem 1rem; }
+            .insight-block { padding: 1.2rem 1.2rem; }
+            .faq-item { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部 目录感 -->
+    <header class="page-header">
+        <div class="breadcrumb"><span>索引</span> / 知识库 · 条目001</div>
+        <h1>开云 · 资料整理与信息索引</h1>
+        <p>基于多源材料整合的结构化笔记，侧重概念说明、使用场景与参考提示。内容保持中立，仅作信息汇编。</p>
+    </header>
+
+    <!-- 网格卡片 —— 目录入口感 -->
+    <div class="info-grid">
+        <div class="card">
+            <div class="highlight-tag">概念说明</div>
+            <h3>平台定位</h3>
+            <p><a href="https://www.order-kaiyunsports.com.cn" style="color:#2f281e;text-decoration: underline;text-underline-offset:2px;text-decoration-color:#cbbca4;">开云</a> 是一个综合信息与交互服务的线上站点，涉及体育、娱乐及衍生内容版块。其界面逻辑强调模块化引导，用户可通过导航快速定位不同功能分区。</p>
+        </div>
+        <div class="card">
+            <div class="highlight-tag">结构特征</div>
+            <h3>目录式布局</h3>
+            <ul>
+                <li>首页采用多列卡片入口，区分资讯、服务与辅助工具</li>
+                <li>全局搜索与分类标签并置，降低检索成本</li>
+                <li>底部集中展示协议、政策与联系方式</li>
+            </ul>
+        </div>
+        <div class="card">
+            <div class="highlight-tag">场景</div>
+            <h3>适用方向</h3>
+            <ul>
+                <li>信息查询：体育赛事、活动日历</li>
+                <li>内容浏览：图文资讯、数据速览</li>
+                <li>辅助功能：账户管理、偏好设置</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 提示区 —— 引用风格 -->
+    <div class="tip-block">
+        <span class="label">📌 检索提示</span>
+        <span>如需了解平台的结构与入口，可直接参考</span>
+        <a href="https://www.order-kaiyunsports.com.cn">开云</a>
+        <span>的导航体系。建议优先查看“帮助”或“指南”分区以获得操作说明。</span>
+    </div>
+
+    <!-- 说明区 / 引用块 -->
+    <div class="insight-block">
+        <strong>▍ 资料整理说明</strong>
+        本页内容基于公开界面与通用信息架构归纳，不包含非公开数据或主观评价。所有描述均以可观测的交互元素和页面结构为准，索引目的为提升信息获取效率。
+    </div>
+
+    <!-- 相关信息区 —— FAQ 摘要/条目 -->
+    <section class="related-section">
+        <h2>相关信息 · 常见问题摘要</h2>
+        <div class="faq-item">
+            <span class="q">平台主要提供哪些内容？</span>
+            <span class="a">涵盖体育资讯、娱乐信息、社区互动以及个人账户相关工具。具体模块可通过首页入口浏览。</span>
+        </div>
+        <div class="faq-item">
+            <span class="q">如何了解最新功能？</span>
+            <span class="a">关注站内公告或“更新日志”栏目。外部索引可参考 <a href="https://www.order-kaiyunsports.com.cn">开云</a> 的动态区域。</span>
+        </div>
+        <div class="faq-item">
+            <span class="q">信息架构是否清晰？</span>
+            <span class="a">采用横向导航 + 分类卡片设计，各分区标题明确，适合按需查阅。移动端适配后依然保持分层逻辑。</span>
+        </div>
+        <div class="faq-item" style="border-bottom: none;">
+            <span class="q">有没有使用建议？</span>
+            <span class="a">首次使用可先浏览“指南”或“常见问题”页面；善用搜索栏可快速定位特定条目。</span>
+        </div>
+    </section>
+
+    <!-- 底部 信息补充 -->
+    <div class="footnote">
+        <span>资料汇编 · 中立索引</span>
+        <span>版本 2025.04 · 条目基于公开界面</span>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://odfodzois714.github.io/order-kaiyunsports-com-cn/sitemap.xml
